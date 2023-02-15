@@ -1,0 +1,17 @@
+/* 项 */
+.contain_item {
+  flex: 1;
+  border: 1px solid #ccc;
+  padding: 4px;
+  list-style: none;
+  margin-top: -1px;
+}
+.contain_item:hover {
+  background-color: #f2eded;
+}
+
+.contain_list-li {
+  list-style: none;
+  position: relative;
+  vertical-align: middle;
+}

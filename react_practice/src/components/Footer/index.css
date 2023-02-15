@@ -1,0 +1,6 @@
+/* 底部 */
+.contain_footer {
+  flex: 1;
+  display: flex;
+  justify-content: space-around;
+}
