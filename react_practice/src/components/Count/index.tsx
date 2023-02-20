@@ -1,28 +1,39 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Button, Select } from 'antd'
+// 用于获取redux中保存的状态
+import store from '../../redux/store'
 
-const Count = React.forwardRef((props, ref) => {
-  let selectNumber: number = 1 // 定义select选中的结果
-  const [count, setCount] = useState(0) // 数量
+let selectNumber: number = 1 // 定义select选中的结果
+
+const Count = (() => {
+  const [, setCount] = useState(0) // 数量
+
+  useEffect(() => {
+    // 检测redux中状态的变化，只要变化，就调用redux
+    store.subscribe(() => {
+      setCount(() => setCount(0) as any)
+    })
+  })
 
   // 加
   const increment = () => {
-    setCount(() => count + selectNumber)
+    // 通知redux+value
+    store.dispatch({ type: 'increment', data: { value: selectNumber } })
   }
   // 减
   const decrement = () => {
-    setCount(() => count - selectNumber)
+    store.dispatch({ type: 'decrement', data: { value: selectNumber } })
   }
   // 如果为奇数则加
   const incrementIfOdd = () => {
-    if (selectNumber % 2 !== 0) {
-      setCount(() => count + selectNumber)
+    if (store.getState() % 2 !== 0) {
+      store.dispatch({ type: 'incrementIfOdd', data: { value: selectNumber } })
     }
   }
   // 如果为异步则加
   const incrementIfAsync = () => {
     setTimeout(() => {
-      setCount(() => count + selectNumber)
+      store.dispatch({ type: 'incrementIfAsync', data: { value: selectNumber } })
     }, 500);
   }
 
@@ -32,7 +43,7 @@ const Count = React.forwardRef((props, ref) => {
 
   return (
     <div>
-      <h1>当前求和为: {count}</h1>
+      <h1>当前求和为: {store.getState()}</h1>
       <Select defaultValue={selectNumber}
         options={
           [
