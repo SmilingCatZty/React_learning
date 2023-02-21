@@ -1,46 +1,68 @@
+import React, { useEffect, useState } from 'react'
+import { Button, Select } from 'antd'
 // 引入CountUI组件
-import CountUI from '../../components/Count/index'
+// import CountUI from '../../components/Count/index'
 // 引入connect，用于连接UI与redux
 import { connect } from 'react-redux'
 import { createIncrementAction, createDecrementAction, createIncrementIfAsyncAction } from '../../redux/count_action'
 
-/**
- * 1、'mapStateToPorps'的返回值是一个对象
- * 2、'mapStateToPorps'函数返回的对象中的key作为给ui组件props的key，value作为传递给ui组件props的value -- 状态
- * 3、'mapStateToPorps'用于传递状态
- */
-const mapStateToPorps = (state: any) => {
-  return { count: state }
-}
-/**
- * 1、'mapDispatchToProps'的返回值是一个对象
- * 2、'mapDispatchToProps'函数返回的对象中的key作为给ui组件props的key，value作为传递给ui组件props的value -- 操作的方法
- * 3、'mapDispatchToProps'用于传递状态的方法
- */
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    jia: (value: number) => dispatch(createIncrementAction({ value })), // 加法操作
-    // dispatch({ type: INCREMENT, data: { value: number } })
-    jian: (value: number) => dispatch(createDecrementAction({ value })), // 减法操作
-    // dispatch({ type: DECREMENT, data: { value: number } })
-    jiaAsync: (value: number, time: number) => dispatch(createIncrementIfAsyncAction({ value }, time))
+let selectNumber: number = 1 // 定义select选中的结果
+
+const Count = ((props: any) => {
+  const [, setCount] = useState(0) // 数量
+
+  useEffect(() => {
+    // 检测redux中状态的变化，只要变化，就调用redux
+    setCount(() => setCount(0) as any)
+  }, [])
+
+  // 加
+  const increment = () => props.jia(selectNumber)
+
+  // 减
+  const decrement = () => props.jian(selectNumber)
+  // 如果为奇数则加
+  const incrementIfOdd = () => {
+    if (props.count % 2 !== 0) {
+      props.jia(selectNumber)
+    }
   }
-}
+  // 如果为异步则加
+  const incrementIfAsync = () => props.jiaAsync(selectNumber, 500)
 
-// 创建一个count的容器组件
-const countContainer = connect(mapStateToPorps, mapDispatchToProps)(CountUI)
+  const handleChange = (v: any) => selectNumber = v
 
-/**
- * 框架层面的优化，api内部帮忙封装了dispatch
-  const countContain = connect(
-    state => ({ count: state }),
-    dispatch => ({
-      jia: createIncrementAction,
-      jian: createDecrementAction,
-      jiaAsync: createIncrementIfAsyncAction
-    })
+  return (
+    <div>
+      <h1>当前求和为: {props.count}</h1>
+      <Select defaultValue={selectNumber}
+        options={
+          [
+            { value: 1, label: 1 },
+            { value: 2, label: 2 },
+            { value: 3, label: 3 },
+          ]
+        }
+        onChange={handleChange}>
+      </Select>&nbsp;
+      <Button onClick={() => increment()}> + </Button>&nbsp;
+      <Button onClick={() => decrement()}> - </Button>&nbsp;
+      <Button onClick={() => incrementIfOdd()}>当前求和为奇数再加</Button>&nbsp;
+      <Button onClick={() => incrementIfAsync()}>异步加</Button>
+    </div>
   )
-*/
+})
+// 创建一个count的容器组件
+// const countContainer = connect(mapStateToPorps, mapDispatchToProps)(CountUI)
+// 框架层面的优化，api内部帮忙封装了dispatch
+const countContainer = connect(
+  state => ({ count: state }),
+  {
+    jia: (value: number) => createIncrementAction({ value }),
+    jian: (value: number) => createDecrementAction({ value }),
+    jiaAsync: (value: number, time: number) => createIncrementIfAsyncAction({ value }, time)
+  }
+)(Count)
 
 
 export default countContainer

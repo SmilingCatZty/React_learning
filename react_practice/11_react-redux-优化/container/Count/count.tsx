@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Button, Select } from 'antd'
+// 引入CountUI组件
+// import CountUI from '../../components/Count/index'
+// 引入connect，用于连接UI与redux
+import { connect } from 'react-redux'
+import { createIncrementAction, createDecrementAction, createIncrementIfAsyncAction } from '../../redux/count_action'
 
 let selectNumber: number = 1 // 定义select选中的结果
 
 const Count = ((props: any) => {
-  console.log('props', props);
-
   const [, setCount] = useState(0) // 数量
 
   useEffect(() => {
@@ -14,14 +17,10 @@ const Count = ((props: any) => {
   }, [])
 
   // 加
-  const increment = () => {
-    // 通知redux+value
-    props.jia(selectNumber)
-  }
+  const increment = () => props.jia(selectNumber)
+
   // 减
-  const decrement = () => {
-    props.jian(selectNumber)
-  }
+  const decrement = () => props.jian(selectNumber)
   // 如果为奇数则加
   const incrementIfOdd = () => {
     if (props.count % 2 !== 0) {
@@ -29,13 +28,9 @@ const Count = ((props: any) => {
     }
   }
   // 如果为异步则加
-  const incrementIfAsync = () => {
-    props.jiaAsync(selectNumber, 500)
-  }
+  const incrementIfAsync = () => props.jiaAsync(selectNumber, 500)
 
-  const handleChange = (v: any) => {
-    selectNumber = v
-  }
+  const handleChange = (v: any) => selectNumber = v
 
   return (
     <div>
@@ -57,4 +52,17 @@ const Count = ((props: any) => {
     </div>
   )
 })
-export default Count 
+// 创建一个count的容器组件
+// const countContainer = connect(mapStateToPorps, mapDispatchToProps)(CountUI)
+// 框架层面的优化，api内部帮忙封装了dispatch
+const countContainer = connect(
+  state => ({ count: state }),
+  {
+    jia: (value: number) => createIncrementAction({ value }),
+    jian: (value: number) => createDecrementAction({ value }),
+    jiaAsync: (value: number, time: number) => createIncrementIfAsyncAction({ value }, time)
+  }
+)(Count)
+
+
+export default countContainer
