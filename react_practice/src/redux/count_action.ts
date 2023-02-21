@@ -4,6 +4,7 @@
  * 3、reducer会接收到两个函数，之前的状态：previousStatus和 动作对象：action
  */
 import { INCREMENT, DECREMENT, INCREMENTIFODD, INCREMENTIFASYNC } from './constant'
+import store from './store';
 
 // 加
 // const createIncrementAction = (data: any) => {
@@ -17,9 +18,18 @@ const createIncrementAction = (data: any) => ({ type: INCREMENT, data })  // 返
 // }
 const createDecrementAction = (data: any) => ({ type: DECREMENT, data })  // 返回一个对象，简写形式
 
-const createIncrementIfOddAction = (data: any) => ({ type: INCREMENTIFODD, data })  // 返回一个对象，简写形式
+const createIncrementIfOddAction = (data: any) => {
 
-const createIncrementIfAsyncAction = (data: any) => ({ type: INCREMENTIFASYNC, data })  // 返回一个对象，简写形式
+}  // 返回一个对象，简写形式
+
+const createIncrementIfAsyncAction = (data: any, time: any) => {
+  return (dispatch: any) => {
+    return setTimeout(() => {
+      store.dispatch({ type: INCREMENT, data })
+    }, time);
+
+  }
+}  // 返回一个对象，简写形式
 
 
 export {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Button, Select } from 'antd'
 // 用于获取redux中保存的状态
 import store from '../../redux/store'
-import { createDecrementAction, createIncrementAction } from '../../redux/count_action'
+import { createDecrementAction, createIncrementAction, createIncrementIfAsyncAction } from '../../redux/count_action'
 // import { INCREMENT, DECREMENT, INCREMENTIFODD, INCREMENTIFASYNC } from '../../redux/constant'
 
 let selectNumber: number = 1 // 定义select选中的结果
@@ -34,9 +34,9 @@ const Count = (() => {
   }
   // 如果为异步则加
   const incrementIfAsync = () => {
-    setTimeout(() => {
-      store.dispatch({ type: 'incrementIfAsync', data: { value: selectNumber } })
-    }, 500);
+
+    store.dispatch(createIncrementIfAsyncAction({ value: selectNumber }, 500))
+
   }
 
   const handleChange = (v: any) => {
