@@ -1,0 +1,21 @@
+.App{
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+.App-contain{
+  width: 100%;
+}
+.list-title{
+  border-bottom: 2px solid #ccc;
+}
+.list-group{
+  width: 40%;
+  display: inline-block;
+  margin-top: 20px;
+}
+.list-page{
+  display: inline-block;
+  width: 100%;
+}
