@@ -4,8 +4,6 @@ import { Button, Select } from 'antd'
 let selectNumber: number = 1 // 定义select选中的结果
 
 const Count = ((props: any) => {
-  console.log('props', props);
-
   const [, setCount] = useState(0) // 数量
 
   useEffect(() => {

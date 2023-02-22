@@ -3,8 +3,8 @@
  * 2、reducer的本质就是一个函数
  * 3、reducer会接收到两个函数，之前的状态：previousStatus和 动作对象：action
  */
-import { INCREMENT, DECREMENT, INCREMENTIFODD, INCREMENTIFASYNC } from './constant'
-import store from './store';
+import { INCREMENT, DECREMENT, INCREMENTIFODD, INCREMENTIFASYNC } from '../constant'
+import store from '../store';
 
 // 加
 const createIncrementAction = (data: any) => ({ type: INCREMENT, data })  

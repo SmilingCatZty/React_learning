@@ -4,7 +4,7 @@
  * 3、reducer会接收到两个函数，之前的状态：previousStatus和 动作对象：action
  */
 
-import { INCREMENT,DECREMENT,INCREMENTIFODD,INCREMENTIFASYNC} from './constant'
+import { INCREMENT,DECREMENT,INCREMENTIFODD,INCREMENTIFASYNC} from '../constant'
 
 
 const initState: number = 0
