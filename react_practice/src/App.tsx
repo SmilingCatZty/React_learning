@@ -10,7 +10,6 @@ const App: React.FC = (props) => {
       {/* 给容器组件传递store */}
       <Count />
       <hr />
-      <hr />
       <Person />
       <hr />
       <Mix />
